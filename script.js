@@ -55,7 +55,6 @@ const GameController = (function() {
 
 
   const newGame = () => {
-    gameOver = false;
     turn = 0;
     Board.reset();
     DisplayController.notify('New game started');
