@@ -37,7 +37,7 @@ const Board = (function() {
       throw new Error('You must play in a space that is not already occupied');
     }
 
-    state[x][y] = marker;
+    state[y][x] = marker;
   };
 
   return { reset, get, placeMarker };
@@ -79,12 +79,11 @@ const GameController = (function() {
       newTurn();
       return;
     }
-
+    DisplayController.updateBoard(x, y);
     endTurn();
   }
 
   const endTurn = () => {
-    DisplayController.renderBoard();
     const gameOver = gameIsOver();
     if (gameOver) {
       DisplayController.notify('Game over');
@@ -159,20 +158,56 @@ const GameController = (function() {
 })();
 
 const DisplayController = (function() {
+  const boardEl = document.getElementById('board');
+
   const notify = (message) => {
     console.log(message);
   } 
 
   const renderBoard = () => {
     const board = Board.get();
-    const stateString = board.map(row => {
-      return row.map(column => `[${column || ' '}]`).join('');
-    });
+    boardEl.innerHTML = '';
+    board.forEach((row, y) => {
+      const rowEl = createRow();
+      row.map((_col, x) => createCell(x, y)).forEach(cell => {
+        rowEl.appendChild(cell);
+      });
 
-    console.log(stateString.join('\n'));
+      boardEl.appendChild(rowEl);
+    });
   }
 
-  return { notify, renderBoard };
+  const updateBoard = (x, y) => {
+    const board = Board.get();
+    
+    const cellEl = document.getElementById(`${x}-${y}`);
+    const marker = board[y][x]
+    cellEl.ariaLabel = `${marker}. Row ${y + 1}, column ${x + 1}`;
+    cellEl.classList.add(`cell--${marker.toLowerCase()}`);
+    cellEl.ariaDisabled = true;
+  }
+
+  const createRow = () => {
+    const row = document.createElement('div');
+    row.role = 'row';
+    row.className = 'board__row';
+
+    return row;
+  }
+
+  const createCell = (x, y) => {
+    const cell = document.createElement('button');
+    cell.id = `${x}-${y}`;
+    cell.dataset.x = x;
+    cell.dataset.y = y;
+    cell.className = 'cell';
+    cell.role = 'gridcell';
+    cell.ariaLabel = `Empty cell. Row ${y + 1}, column ${x + 1}`;
+
+    return cell;
+  }
+
+  return { notify, renderBoard, updateBoard };
 })();
 
 GameController.newGame();

@@ -1,0 +1,47 @@
+:root {
+  --border: 3px solid #EEE;
+}
+
+.board {
+  max-width: 600px;
+  max-height: 600px;
+}
+
+.board__row {
+  display: flex;
+}
+
+.cell {
+  flex: 1;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center center;
+  border: none;
+}
+
+.cell.cell--x {
+  background-image: url('cross.svg');
+}
+
+.cell.cell--o {
+  background-image: url('circle.svg');
+}
+
+.cell[data-x="0"] {
+  border-right: var(--border);
+}
+
+.cell[data-x="2"] {
+  border-left: var(--border);
+}
+
+.cell[data-y="1"] {
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
