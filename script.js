@@ -33,7 +33,7 @@ const Board = (function() {
       throw new RangeError(`y argument must be between 0 and ${columns - 1}`);
     }
 
-    if (state[x][y] !== null) {
+    if (state[y][x] !== null) {
       throw new Error('You must play in a space that is not already occupied');
     }
 
@@ -87,6 +87,7 @@ const GameController = (function() {
     const gameOver = gameIsOver();
     if (gameOver) {
       DisplayController.notify('Game over');
+      DisplayController.disableAllCells();
 
       switch(gameOver) {
         case GameState.X_WINS:
@@ -104,6 +105,7 @@ const GameController = (function() {
 
     } else {
       turn++;
+      DisplayController.switchPlayer();
       newTurn();
     }
   }
@@ -187,6 +189,15 @@ const DisplayController = (function() {
     cellEl.ariaDisabled = true;
   }
 
+  const disableAllCells = () => {
+    const cellEls = Array.from(document.getElementsByClassName('cell'));
+    cellEls.forEach(cellEl => cellEl.ariaDisabled = true);
+  }
+
+  const switchPlayer = () => {
+    boardEl.classList.toggle('board--player-2');
+  }
+
   const createRow = () => {
     const row = document.createElement('div');
     row.role = 'row';
@@ -203,11 +214,15 @@ const DisplayController = (function() {
     cell.className = 'cell';
     cell.role = 'gridcell';
     cell.ariaLabel = `Empty cell. Row ${y + 1}, column ${x + 1}`;
+    cell.addEventListener('click', (e) => {
+      if (e.target.ariaDisabled) return;
+      GameController.playTurn(x, y);
+    });
 
     return cell;
   }
 
-  return { notify, renderBoard, updateBoard };
+  return { notify, renderBoard, updateBoard, switchPlayer, disableAllCells };
 })();
 
 GameController.newGame();

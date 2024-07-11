@@ -1,5 +1,9 @@
 :root {
   --border: 3px solid #EEE;
+  --color-primary: #E7739A;
+  --color-primary-hover: #FCEEF2;
+  --color-secondary: #BEE265;
+  --color-secondary-hover: #F8FCEE;
 }
 
 .board {
@@ -31,6 +35,18 @@
 
 .cell.cell--o {
   background-image: url('circle.svg');
+}
+
+.cell:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.board.board--player-2 .cell:hover {
+  background-color: var(--color-secondary-hover);
+} 
+
+.cell:not([aria-disabled="true"]):hover {
+  cursor: pointer;
 }
 
 .cell[data-x="0"] {
