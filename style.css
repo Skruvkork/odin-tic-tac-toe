@@ -1,14 +1,57 @@
 :root {
   --border: 3px solid #EEE;
   --color-primary: #E7739A;
-  --color-primary-hover: #FCEEF2;
+  --color-primary-hover: #F9DCE6;
   --color-secondary: #BEE265;
-  --color-secondary-hover: #F8FCEE;
+  --color-secondary-hover: #E9F5CC;
+  --color-surface: #37323E;
+  --color-background: #28242D;
+  --color-text: #F5F4F6;
+  --font-family: "Pavanam", sans-serif;
+  --font-size-body: 16px;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.wrapper {
+  max-width: 600px;
+  margin: auto;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+input {
+  padding: 12px 16px;
+  border: 1px solid #786D88;
+  border-radius: 16px;
+  font-size: var(--font-size-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+h1 {
+  font-family: "Exo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  text-align: center;
 }
 
 .board {
   max-width: 600px;
   max-height: 600px;
+  margin: auto;
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 .board__row {

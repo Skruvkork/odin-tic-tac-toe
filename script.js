@@ -1,7 +1,14 @@
 const Player = function(markerSymbol) {
   const marker = markerSymbol;
+  let name = null;
 
-  return { marker };
+  const getName = () => name;
+
+  const setName = (newName) => {
+    name = newName;
+  }
+
+  return { marker, getName, setName };
 }
 
 const Board = (function() {
@@ -46,9 +53,8 @@ const Board = (function() {
 const GameController = (function() {
   const GameState = {
     NOT_OVER: 0,
-    X_WINS: 1,
-    O_WINS: 2,
-    TIE: 3,
+    VICTORY: 1,
+    TIE: 2,
   };
   const players = [Player('X'), Player('O')];
   let turn = 0;
@@ -84,17 +90,14 @@ const GameController = (function() {
   }
 
   const endTurn = () => {
-    const gameOver = gameIsOver();
-    if (gameOver) {
+    const gameState = getGameState();
+    if (gameState.gameOver) {
       DisplayController.notify('Game over');
       DisplayController.disableAllCells();
 
-      switch(gameOver) {
-        case GameState.X_WINS:
-          DisplayController.notify('X wins!');
-          break;
-        case GameState.O_WINS:
-          DisplayController.notify('O wins!');
+      switch(gameState.gameOver) {
+        case GameState.VICTORY:
+          DisplayController.notify(`${gameState.player.getName() || gameState.player.marker} wins!`);
           break;
         case GameState.TIE:
           DisplayController.notify('Tie!');
@@ -133,34 +136,40 @@ const GameController = (function() {
     return diagonals.some((diag) => isSetComplete(diag, marker));
   }
 
-  const gameIsOver = () => {
+  const getGameState = () => {
     const board = Board.get();
 
     const tie = board.flat().every((cell) => cell !== null);
     if (tie) {
       DisplayController.notify('tie');
-      return GameState.TIE;
+      return { gameOver: GameState.TIE, player: null };
     }
 
     const checkPlayerVictory = (marker) => checkRows(board, marker) || checkColumns(board, marker) || checkDiagonals(board, marker);
 
-    if (checkPlayerVictory(players[0].marker)) {
-      return GameState.X_WINS;
-    }
+    const winningPlayer = players.find((player) => checkPlayerVictory(player.marker));
+    if (winningPlayer) return { gameOver: GameState.VICTORY, player: winningPlayer };
 
-    if (checkPlayerVictory(players[1].marker)) {
-      return GameState.O_WINS;
-    }
+    return { gameOver: GameState.NOT_OVER, player: null };
+  }
 
-    return GameState.NOT_OVER;
+  const getPlayer = (index) => players[index];
+
+  const setPlayerName = (player, newName) => {
+    player.setName(newName);
   }
 
 
-  return { newGame, playTurn };
+  return { newGame, playTurn, getPlayer, setPlayerName };
 })();
 
 const DisplayController = (function() {
   const boardEl = document.getElementById('board');
+  const player1Input = document.querySelector('input[name="player1"]');
+  const player2Input = document.querySelector('input[name="player2"]');
+
+  player1Input.addEventListener('blur', (e) => GameController.setPlayerName(GameController.getPlayer(0), e.target.value));
+  player2Input.addEventListener('blur', (e) => GameController.setPlayerName(GameController.getPlayer(1), e.target.value));
 
   const notify = (message) => {
     console.log(message);
