@@ -11,6 +11,8 @@
   --color-text: #F5F4F6;
   --font-family: "Mulish", sans-serif;
   --font-size-body: 16px;
+
+  --background-transition: background-color 150ms ease-in-out;
 }
 
 body {
@@ -50,7 +52,7 @@ input {
   font-family: var(--font-family);
   font-size: var(--font-size-body);
   font-weight: 600;
-  transition: background-color 150ms ease-in-out;
+  transition: var(--background-transition);
 }
 
 .btn:hover {
@@ -90,6 +92,7 @@ h1 {
   background-size: 80%;
   background-position: center center;
   border: none;
+  transition: var(--background-transition);
 }
 
 .cell.cell--x {
