@@ -2,7 +2,7 @@ const Player = function(markerSymbol) {
   const marker = markerSymbol;
   let name = null;
 
-  const getName = () => name;
+  const getName = () => name || marker;
 
   const setName = (newName) => {
     name = newName;
@@ -74,7 +74,7 @@ const GameController = (function() {
 
   const newTurn = () => {
     DisplayController.switchPlayer();
-    DisplayController.notify(`${getActivePlayer().marker}, play your turn`);
+    DisplayController.notify(`${getActivePlayer().getName()}, play your turn`);
   }
 
   const playTurn = (x, y) => {
@@ -98,7 +98,7 @@ const GameController = (function() {
 
       switch(gameState.gameOver) {
         case GameState.VICTORY:
-          DisplayController.notify(`${gameState.player.getName() || gameState.player.marker} wins!`);
+          DisplayController.notify(`${gameState.player.getName()} wins!`);
           break;
         case GameState.TIE:
           DisplayController.notify('Tie!');
@@ -162,6 +162,7 @@ const GameController = (function() {
 
 const DisplayController = (function() {
   const boardEl = document.getElementById('board');
+  const notificationEl = document.getElementById('notifications');
   const player1Input = document.querySelector('input[name="player1"]');
   const player2Input = document.querySelector('input[name="player2"]');
 
@@ -172,7 +173,7 @@ const DisplayController = (function() {
   restartButton.addEventListener('click', GameController.newGame);
 
   const notify = (message) => {
-    console.log(message);
+    notificationEl.innerText = message;
   } 
 
   const renderBoard = () => {
