@@ -155,12 +155,7 @@ const GameController = (function() {
 
   const getPlayer = (index) => players[index];
 
-  const setPlayerName = (player, newName) => {
-    player.setName(newName);
-  }
-
-
-  return { newGame, playTurn, getPlayer, setPlayerName };
+  return { newGame, playTurn, getPlayer };
 })();
 
 const DisplayController = (function() {
@@ -168,8 +163,8 @@ const DisplayController = (function() {
   const player1Input = document.querySelector('input[name="player1"]');
   const player2Input = document.querySelector('input[name="player2"]');
 
-  player1Input.addEventListener('blur', (e) => GameController.setPlayerName(GameController.getPlayer(0), e.target.value));
-  player2Input.addEventListener('blur', (e) => GameController.setPlayerName(GameController.getPlayer(1), e.target.value));
+  player1Input.addEventListener('blur', (e) => GameController.getPlayer(0).setName(e.target.value));
+  player2Input.addEventListener('blur', (e) => GameController.getPlayer(1).setName(e.target.value));
 
   const restartButton = document.getElementById('restart');
   restartButton.addEventListener('click', GameController.newGame);
