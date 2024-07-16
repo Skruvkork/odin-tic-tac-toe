@@ -4,10 +4,12 @@
   --color-primary-hover: #F9DCE6;
   --color-secondary: #BEE265;
   --color-secondary-hover: #E9F5CC;
+  --color-tertiary: #0081B8;
+  --color-tertiary-hover: #00ABF5;
   --color-surface: #37323E;
   --color-background: #28242D;
   --color-text: #F5F4F6;
-  --font-family: "Pavanam", sans-serif;
+  --font-family: "Mulish", sans-serif;
   --font-size-body: 16px;
 }
 
@@ -33,9 +35,27 @@ input {
   padding: 12px 16px;
   border: 1px solid #786D88;
   border-radius: 16px;
+  font-family: var(--font-family);
   font-size: var(--font-size-body);
   background-color: var(--color-background);
   color: var(--color-text);
+}
+
+.btn {
+  padding: 4px 16px;
+  border-radius: 12px;
+  background-color: var(--color-tertiary);
+  color: #fff;
+  border: none;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  transition: background-color 150ms ease-in-out;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: var(--color-tertiary-hover);
 }
 
 h1 {

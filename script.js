@@ -171,6 +171,9 @@ const DisplayController = (function() {
   player1Input.addEventListener('blur', (e) => GameController.setPlayerName(GameController.getPlayer(0), e.target.value));
   player2Input.addEventListener('blur', (e) => GameController.setPlayerName(GameController.getPlayer(1), e.target.value));
 
+  const restartButton = document.getElementById('restart');
+  restartButton.addEventListener('click', GameController.newGame);
+
   const notify = (message) => {
     console.log(message);
   } 
