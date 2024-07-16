@@ -73,6 +73,7 @@ const GameController = (function() {
   const getActivePlayer = () => players[turn % 2];
 
   const newTurn = () => {
+    DisplayController.switchPlayer();
     DisplayController.notify(`${getActivePlayer().marker}, play your turn`);
   }
 
@@ -108,7 +109,6 @@ const GameController = (function() {
 
     } else {
       turn++;
-      DisplayController.switchPlayer();
       newTurn();
     }
   }
@@ -155,7 +155,9 @@ const GameController = (function() {
 
   const getPlayer = (index) => players[index];
 
-  return { newGame, playTurn, getPlayer };
+  const getTurnCount = () => turn;
+
+  return { newGame, playTurn, getPlayer, getTurnCount };
 })();
 
 const DisplayController = (function() {
@@ -202,7 +204,9 @@ const DisplayController = (function() {
   }
 
   const switchPlayer = () => {
-    boardEl.classList.toggle('board--player-2');
+    GameController.getTurnCount() % 2 === 0
+    ? boardEl.classList.remove('board--player-2')
+    : boardEl.classList.add('board--player-2');
   }
 
   const createRow = () => {
